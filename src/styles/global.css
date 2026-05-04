@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #faf7f0;
+  --color-bg-alt: #f7f3ea;
+  --color-ink: #151515;
+  --color-muted: #6b665c;
+  --color-amber-accent: #d97706;
+  --color-accent-dark: #1f2937;
+  --color-moss: #3b7a57;
+  --color-border-warm: #e7dfd2;
+  --color-traffic-red: #ef6a5f;
+  --color-traffic-yellow: #f4bd4f;
+  --color-traffic-green: #61c554;
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  html {
+    background-color: #faf7f0;
+    background-image:
+      linear-gradient(to bottom, #faf7f0 0%, transparent 3rem),
+      radial-gradient(circle at 50% 5rem, rgba(217, 119, 6, 0.18), transparent 31rem),
+      linear-gradient(180deg, #faf7f0, #f7f3ea 42%, #faf7f0);
+    min-height: 100vh;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply text-ink font-sans antialiased;
+    background: transparent;
+  }
+
+  /* Subtle background grid */
+  body::before {
+    content: "";
+    @apply fixed inset-0 pointer-events-none z-[-1];
+    background-image: 
+      linear-gradient(rgba(21, 21, 21, 0.026) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(21, 21, 21, 0.026) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.45) 4rem, rgba(0, 0, 0, 0.45) 35%, transparent 60%);
+  }
+
+  h1, h2, h3 {
+    @apply leading-[0.98] tracking-tight;
+  }
+
+  a, button {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
+  }
+}
+
+@layer utilities {
+  /* Screen-reader only */
+  .sr-only {
+    @apply absolute overflow-hidden whitespace-nowrap;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+  }
+
+  /* Glassmorphic navigation pill */
+  .glass-nav {
+    @apply backdrop-blur-xl bg-white/70 border border-border-warm/90 rounded-full shadow-[0_12px_32px_rgba(55,42,25,0.08)];
+  }
+  
+  /* Premium card with hover lift */
+  .premium-card {
+    @apply bg-white/80 border border-border-warm/90 rounded-[28px] shadow-[0_14px_34px_rgba(55,42,25,0.08)] transition-all duration-200;
+  }
+  
+  .premium-card:hover {
+    @apply -translate-y-1 shadow-[0_24px_70px_rgba(55,42,25,0.12)] border-amber-accent/30;
+  }
+
+  /* Floating mock window */
+  .animate-float {
+    animation: float 10s ease-in-out infinite;
+  }
+
+  /* Scroll-triggered entrance animation */
+  [data-animate] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 600ms ease, transform 600ms ease;
+  }
+
+  [data-animate].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Pointer-tracking shine overlay for buttons */
+  .button-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .button-shine::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-26%);
+    transition: opacity 220ms ease, transform 520ms ease;
+    background:
+      radial-gradient(circle at var(--pointer-x, 50%) var(--pointer-y, 50%), rgba(255, 248, 234, 0.36), transparent 8rem),
+      linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, 0.18) 35%, transparent 68%);
+  }
+
+  .button-shine:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Arrow that appears on the right without shifting centered text */
+  .arrow-reveal {
+    @apply relative px-8; /* Equal padding on both sides ensures centering */
+  }
+
+  .arrow-reveal::after {
+    content: "→";
+    @apply absolute right-3 top-1/2 -translate-y-1/2 opacity-0 -translate-x-2 transition-all duration-200;
+  }
+
+  .arrow-reveal:hover::after,
+  .arrow-reveal:focus-visible::after {
+    @apply opacity-100 translate-x-0;
+  }
+
+  /* Active press effect */
+  .press-scale:active {
+    transform: translateY(0) scale(0.985);
+  }
+
+  /* Staggered entrance delays */
+  .delay-150 { animation-delay: 150ms; }
+  .delay-300 { animation-delay: 300ms; }
+
+  /* Complete reduced-motion support */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    /* Hide WebGL canvases entirely */
+    canvas[aria-hidden="true"] {
+      display: none !important;
+    }
+
+    /* Kill all animation and transition globally */
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    /* Ensure scroll-triggered elements are visible */
+    [data-animate] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: rotateX(3deg) rotateY(-7deg) translateY(0); }
+  50% { transform: rotateX(3deg) rotateY(-7deg) translateY(-6px); }
+}

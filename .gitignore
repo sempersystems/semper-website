@@ -24,3 +24,6 @@ pnpm-debug.log*
 # jetbrains and vscode folder
 .idea/
 .vscode/
+
+# AI
+.agent/

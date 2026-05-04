@@ -1,0 +1,151 @@
+---
+import "../styles/global.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { 
+	title = "Semper | Your Mac's Memory, Finally Searchable",
+	description = "Semper is a local-first memory layer for macOS that makes your work context searchable."
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={description} />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="canonical" href={`https://semper.systems${Astro.url.pathname}`} />
+		<title>{title}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+	</head>
+	<body class="overflow-x-hidden">
+		<header class="fixed top-0 left-0 w-full px-5 pt-4.5 z-50" data-animate>
+			<nav class="w-full max-w-280 mx-auto glass-nav flex items-center justify-between gap-6 py-2.5 pl-4.5 pr-3" aria-label="Primary navigation">
+				<a href="/" class="flex items-center gap-2.5 text-[17px] font-extrabold whitespace-nowrap" aria-label="Semper home">
+					<span class="w-7.5 h-7.5 bg-ink text-[#fff8ea] rounded-[11px] flex items-center justify-center" aria-hidden="true">S</span>
+					<span>Semper</span>
+				</a>
+				
+				<div class="hidden md:flex items-center gap-5 text-sm font-bold text-muted" data-nav-links>
+					<a href="/privacy" class="hover:text-ink transition-colors">Privacy</a>
+					<a href="/how-it-works" class="hover:text-ink transition-colors">How it Works</a>
+					<a href="/waitlist" class="bg-ink text-white rounded-full px-4 py-2.5 button-shine arrow-reveal press-scale hover:shadow-[0_12px_22px_rgba(21,21,21,0.15)] hover:-translate-y-0.5 transition-all">Join waitlist</a>
+				</div>
+				
+				<button 
+					id="mobile-menu-btn"
+					class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 relative z-50"
+					aria-label="Toggle navigation menu"
+					aria-expanded="false"
+				>
+					<span class="w-4.5 h-0.5 bg-ink rounded-full transition-transform duration-300 origin-center"></span>
+					<span class="w-4.5 h-0.5 bg-ink rounded-full transition-transform duration-300 origin-center"></span>
+				</button>
+			</nav>
+		</header>
+
+		<div id="mobile-menu" class="fixed inset-0 z-40 bg-bg/98 backdrop-blur-xl flex flex-col justify-center items-center gap-8 opacity-0 pointer-events-none transition-all duration-300 md:hidden pt-12" role="dialog" aria-label="Mobile navigation">
+			<a href="/privacy" class="text-2xl font-bold text-ink hover:text-amber-accent transition-colors">Privacy</a>
+			<a href="/how-it-works" class="text-2xl font-bold text-ink hover:text-amber-accent transition-colors">How it Works</a>
+			<a href="/waitlist" class="bg-ink text-white rounded-full px-8 py-4 text-xl font-bold mt-4 shadow-xl active:scale-95 transition-all">Join waitlist</a>
+		</div>
+
+		<slot />
+
+		<footer class="w-full p-6" role="contentinfo">
+			<div class="w-full max-w-282.5 mx-auto border-t border-border-warm pt-7 pb-4.5 flex flex-col md:flex-row items-center justify-between gap-4.5 text-muted text-sm">
+				<div class="flex flex-col md:flex-row items-center gap-4.5">
+					<a href="/" class="flex items-center gap-2 text-ink font-extrabold" aria-label="Semper home">
+						<span class="w-6 h-6 bg-ink text-[#fff8ea] rounded-lg flex items-center justify-center text-xs" aria-hidden="true">S</span>
+						<span>Semper</span>
+					</a>
+					<p>A local-first memory layer for macOS.</p>
+				</div>
+				
+				<div class="flex flex-wrap gap-4 font-semibold" aria-label="Footer navigation">
+					<a href="/privacy" class="hover:text-ink">Privacy</a>
+					<a href="/how-it-works" class="hover:text-ink">How it Works</a>
+					<a href="/waitlist" class="hover:text-ink">Waitlist</a>
+					<a href="/privacy-policy" class="hover:text-ink">Privacy Policy</a>
+					<a href="/terms" class="hover:text-ink">Terms</a>
+					<a href="mailto:hello@semper.systems" class="hover:text-ink">Contact</a>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			// --- Mobile menu toggle ---
+			const btn = document.getElementById('mobile-menu-btn');
+			const menu = document.getElementById('mobile-menu');
+
+			if (btn && menu) {
+				btn.addEventListener('click', () => {
+					const isOpen = menu.classList.toggle('opacity-100');
+					menu.classList.toggle('pointer-events-auto', isOpen);
+					menu.classList.toggle('opacity-0', !isOpen);
+					menu.classList.toggle('pointer-events-none', !isOpen);
+					btn.setAttribute('aria-expanded', String(isOpen));
+					document.body.style.overflow = isOpen ? 'hidden' : '';
+
+					const [top, bottom] = btn.querySelectorAll('span');
+					top.classList.toggle('translate-y-1', isOpen);
+					top.classList.toggle('rotate-45', isOpen);
+					bottom.classList.toggle('-translate-y-1', isOpen);
+					bottom.classList.toggle('-rotate-45', isOpen);
+				});
+			}
+
+			// --- Active page highlighting ---
+			const currentPage = window.location.pathname.replace(/\/$/, '') || '/';
+			document.querySelectorAll('[data-nav-links] a').forEach((link) => {
+				if (link instanceof HTMLAnchorElement && link.pathname.replace(/\/$/, '') === currentPage) {
+					link.setAttribute('aria-current', 'page');
+					link.classList.add('text-ink');
+				}
+			});
+
+			// --- Pointer-tracking shine effect ---
+			document.querySelectorAll('.button-shine').forEach((el) => {
+				if (!(el instanceof HTMLElement)) return;
+				el.addEventListener('pointermove', (e) => {
+					const rect = el.getBoundingClientRect();
+					el.style.setProperty('--pointer-x', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+					el.style.setProperty('--pointer-y', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+				});
+			});
+
+			// --- Scroll-triggered entrance animations ---
+			const animatedElements = document.querySelectorAll('[data-animate]');
+
+			// Immediately show elements that are in the initial viewport
+			const headerAndHero = document.querySelectorAll('header[data-animate], .hero [data-animate]');
+			headerAndHero.forEach((el) => el.classList.add('is-visible'));
+
+			if ('IntersectionObserver' in window) {
+				const observer = new IntersectionObserver((entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('is-visible');
+							observer.unobserve(entry.target);
+						}
+					});
+				}, { rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+
+				animatedElements.forEach((el) => {
+					if (!el.classList.contains('is-visible')) {
+						observer.observe(el);
+					}
+				});
+			} else {
+				animatedElements.forEach((el) => el.classList.add('is-visible'));
+			}
+		</script>
+	</body>
+</html>
