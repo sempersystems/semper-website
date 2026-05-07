@@ -9,8 +9,20 @@ Semper quietly captures the context around your work, stores it locally, and hel
 
 ## Development
 
+Prerequisites:
+- Node.js 22.12 or newer
+- Bun
+
+Install dependencies and start the local dev server:
+
 ```sh
 bun install
 bun run dev
 ```
 
+Before deploying, verify the production build:
+
+```sh
+bun run build
+bun run preview
+```
