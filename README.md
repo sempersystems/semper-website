@@ -9,20 +9,24 @@ Semper quietly captures the context around your work, stores it locally, and hel
 
 ## Development
 
-Prerequisites:
+### Prerequisites:
 - Node.js 22.12 or newer
-- Bun
+- Bun (https://bun.sh/) installed and available in your PATH
 
-Install dependencies and start the local dev server:
+### Install dependencies and start the local dev server:
 
 ```sh
 bun install
 bun run dev
 ```
 
-Before deploying, verify the production build:
+### Before deploying, verify the production build:
 
 ```sh
 bun run build
 bun run preview
 ```
+
+### Notes:
+- The `bun run dev` command starts a local development server, usually accessible at http://localhost:3000
+- Use `bun run preview` to preview the production build locally after running `bun run build`
