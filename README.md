@@ -28,5 +28,5 @@ bun run preview
 ```
 
 ### Notes:
-- The `bun run dev` command starts a local development server, usually accessible at http://localhost:3000
-- Use `bun run preview` to preview the production build locally after running `bun run build`
+- The `bun run dev` command starts a local development server and prints the local URL in your terminal.
+- Use `bun run preview` to preview the production build locally after running `bun run build`.
