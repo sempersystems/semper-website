@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout title="Blog | Semper">
+  <main class="w-full max-w-295 mx-auto px-6 pt-32 md:pt-40 pb-32">
+    <div class="max-w-4xl mx-auto" data-animate>
+      <div class="mb-16">
+        <p class="text-sm font-bold text-amber-accent tracking-widest uppercase mb-4">
+          Updates
+        </p>
+        <h1 class="text-[clamp(40px,5vw,64px)] font-extrabold leading-[1.05] tracking-tight text-ink">
+          The Semper Blog
+        </h1>
+      </div>
+
+      <div class="grid gap-12">
+        {posts.map((post: CollectionEntry<'blog'>, index: number) => (
+          <article 
+            class="group relative flex flex-col md:flex-row gap-8 items-start"
+            data-animate
+            style={`transition-delay: ${index * 100}ms`}
+          >
+            <div class="flex-1">
+              <div class="flex items-center gap-4 text-xs font-bold text-muted uppercase tracking-wider mb-3">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('en-us', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+                <span class="w-1 h-1 bg-border-warm rounded-full"></span>
+                <span>{post.data.author}</span>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-bold text-ink mb-4 group-hover:text-amber-accent transition-colors">
+                <a href={`/blog/${post.id}/`} class="before:absolute before:inset-0">
+                  {post.data.title}
+                </a>
+              </h2>
+              <p class="text-muted text-lg leading-relaxed mb-6">
+                {post.data.description}
+              </p>
+              <div 
+                class="inline-flex items-center gap-2 text-sm font-bold text-ink group-hover:text-amber-accent transition-colors"
+                aria-hidden="true"
+              >
+                Read more 
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="translate-x-0 group-hover:translate-x-1.5 transition-transform"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+</Layout>

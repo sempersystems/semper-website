@@ -1,0 +1,115 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	return posts.map((post: CollectionEntry<'blog'>) => ({
+		params: { slug: post.id },
+		props: post,
+	}));
+}
+
+const post = Astro.props as CollectionEntry<'blog'>;
+const { Content } = await render(post);
+
+const allPosts = await getCollection('blog');
+const recentPosts = allPosts
+  .filter((p: CollectionEntry<'blog'>) => p.id !== post.id)
+  .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<Layout title={`${post.data.title} | Semper`} description={post.data.description}>
+  <main class="w-full px-6 pt-32 md:pt-40 pb-32">
+    <div class="max-w-2xl mx-auto">
+      
+      <!-- Back Link -->
+      <div data-animate>
+        <a href="/blog" class="inline-flex items-center gap-2 text-sm font-bold text-muted hover:text-ink transition-colors mb-10 group">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="translate-x-0 group-hover:-translate-x-1.5 transition-transform duration-300 ease-out"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+          Back to blog
+        </a>
+      </div>
+
+      <!-- Header -->
+      <header class="mb-12 md:mb-16" data-animate style="transition-delay: 150ms">
+        <p class="text-sm font-bold text-amber-accent tracking-widest uppercase mb-4">
+          Blog
+        </p>
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-[1.1] tracking-tight mb-6 text-ink">
+          {post.data.title}
+        </h1>
+        <div class="flex flex-wrap items-center gap-3 text-sm font-bold text-muted uppercase tracking-wider">
+          <time datetime={post.data.pubDate.toISOString()}>
+            {post.data.pubDate.toLocaleDateString('en-us', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </time>
+          <span class="w-1 h-1 bg-border-warm rounded-full"></span>
+          <span>{post.data.author}</span>
+        </div>
+      </header>
+      
+      <!-- Content -->
+      <div data-animate style="transition-delay: 300ms">
+        <article class="prose prose-semper max-w-none w-full text-[18px] leading-relaxed text-muted">
+          <Content />
+        </article>
+      </div>
+      
+      <!-- Recent Articles -->
+      {recentPosts.length > 0 && (
+        <div class="mt-24 pt-12 border-t border-border-warm/60" data-animate style="transition-delay: 450ms">
+          <h2 class="text-2xl font-bold text-ink tracking-tight mb-8">Recent Articles</h2>
+          <div class="flex flex-col gap-8">
+            {recentPosts.map((recentPost: CollectionEntry<'blog'>) => (
+              <a href={`/blog/${recentPost.id}/`} class="group/recent grid grid-cols-1 md:grid-cols-[1fr_auto] gap-2 md:gap-8 items-baseline py-2">
+                <h3 class="text-xl font-bold text-ink group-hover/recent:text-amber-accent transition-colors leading-snug">
+                  {recentPost.data.title}
+                </h3>
+                <time datetime={recentPost.data.pubDate.toISOString()} class="text-sm font-bold uppercase tracking-wider text-muted whitespace-nowrap">
+                  {recentPost.data.pubDate.toLocaleDateString('en-us', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </time>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+      
+    </div>
+  </main>
+</Layout>
+
+<style is:global>
+  @reference "../../styles/global.css";
+
+  .prose-semper h2 {
+    @apply text-2xl font-bold text-ink mt-12 mb-4 tracking-tight;
+  }
+  .prose-semper h3 {
+    @apply text-xl font-bold text-ink mt-8 mb-3 tracking-tight;
+  }
+  .prose-semper p {
+    @apply mb-6 leading-relaxed;
+  }
+  .prose-semper ul {
+    @apply list-disc list-outside ml-6 mb-6 space-y-2;
+  }
+  .prose-semper ol {
+    @apply list-decimal list-outside ml-6 mb-6 space-y-2;
+  }
+  .prose-semper strong {
+    @apply font-bold text-ink;
+  }
+  .prose-semper blockquote {
+    @apply border-l-4 border-amber-accent/20 pl-6 italic text-ink/80 my-8;
+  }
+</style>
