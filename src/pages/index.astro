@@ -331,7 +331,11 @@ import Layout from "../layouts/Layout.astro";
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="py-12 md:py-24 scroll-mt-20" aria-labelledby="faq-title">
+    <section
+      id="faq"
+      class="py-12 md:py-24 scroll-mt-20"
+      aria-labelledby="faq-title"
+    >
       <div class="max-w-3xl mx-auto px-4" data-animate>
         <h2
           id="faq-title"
@@ -339,26 +343,35 @@ import Layout from "../layouts/Layout.astro";
         >
           A few things people ask first.
         </h2>
-        
+
         <div class="flex flex-col">
           <article class="py-8">
-            <h3 class="text-xl font-semibold mb-3">Is Semper a screen recorder?</h3>
+            <h3 class="text-xl font-semibold mb-3">
+              Is Semper a screen recorder?
+            </h3>
             <p class="text-muted text-lg leading-relaxed">
-              No. Semper is designed as a searchable memory layer for useful screen context, not a public video recorder.
+              No. Semper is designed as a searchable memory layer for useful
+              screen context, not a public video recorder.
             </p>
           </article>
-          
+
           <article class="py-8 border-t border-border-warm/60">
-            <h3 class="text-xl font-semibold mb-3">Where does my capture history live?</h3>
+            <h3 class="text-xl font-semibold mb-3">
+              Where does my capture history live?
+            </h3>
             <p class="text-muted text-lg leading-relaxed">
-              The product direction is local-first: capture history is stored on your Mac using SQLite.
+              The product direction is local-first: capture history is stored on
+              your Mac using SQLite.
             </p>
           </article>
-          
+
           <article class="py-8 border-t border-border-warm/60">
-            <h3 class="text-xl font-semibold mb-3">Will Semper be open source?</h3>
+            <h3 class="text-xl font-semibold mb-3">
+              Will Semper be open source?
+            </h3>
             <p class="text-muted text-lg leading-relaxed">
-              Yes. The plan is to release the source once the public build is stable enough to inspect and contribute to.
+              Yes. The plan is to release the source once the public build is
+              stable enough to inspect and contribute to.
             </p>
           </article>
         </div>

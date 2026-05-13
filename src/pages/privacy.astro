@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Privacy Policy | Semper">
+  <main class="w-full max-w-295 mx-auto px-6 pt-32 md:pt-40 pb-32">
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2.5fr] gap-12 md:gap-20 max-w-6xl mx-auto" data-animate>
+      
+      <!-- Sticky Sidebar -->
+      <aside class="relative">
+        <div class="md:sticky md:top-32">
+          <p class="text-sm font-bold text-amber-accent tracking-widest uppercase mb-4">
+            Legal
+          </p>
+          <h1 id="privacy-title" class="text-[clamp(40px,5vw,64px)] font-extrabold leading-[1.05] tracking-tight mb-8 text-ink">
+            Privacy Policy
+          </h1>
+          <div class="border-l-2 border-amber-accent/30 pl-4 py-1">
+            <p class="text-xs font-bold text-muted uppercase tracking-wider mb-1">Effective Date</p>
+            <time datetime="2026-05-13" class="text-[17px] font-semibold text-ink">May 13, 2026</time>
+          </div>
+        </div>
+      </aside>
+      
+      <!-- Content -->
+      <div class="space-y-12 md:space-y-16 text-[18px] leading-relaxed text-muted md:mt-2">
+        <section aria-labelledby="sec-waitlist">
+          <h2 id="sec-waitlist" class="text-2xl font-bold text-ink mb-4 tracking-tight">Waitlist</h2>
+          <p>We collect your email address solely to provide early access and product updates. We do not sell or share your email with third parties.</p>
+        </section>
+        
+        <section aria-labelledby="sec-local-sovereignty">
+          <h2 id="sec-local-sovereignty" class="text-2xl font-bold text-ink mb-4 tracking-tight">Local Sovereignty</h2>
+          <p>All screen captures, OCR data, and search indexes are processed and stored exclusively on your Mac. We never access, see, or transmit your local memory data.</p>
+        </section>
+        
+        <section aria-labelledby="sec-telemetry">
+          <h2 id="sec-telemetry" class="text-2xl font-bold text-ink mb-4 tracking-tight">Telemetry</h2>
+          <p>We may collect anonymous crash reports to improve performance. You can disable this in the application settings at any time.</p>
+        </section>
+      </div>
+      
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,50 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Terms of Service | Semper">
+  <main class="w-full max-w-295 mx-auto px-6 pt-32 md:pt-40 pb-32">
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2.5fr] gap-12 md:gap-20 max-w-6xl mx-auto" data-animate>
+      
+      <!-- Sticky Sidebar -->
+      <aside class="relative">
+        <div class="md:sticky md:top-32">
+          <p class="text-sm font-bold text-amber-accent tracking-widest uppercase mb-4">
+            Legal
+          </p>
+          <h1 id="terms-title" class="text-[clamp(40px,5vw,64px)] font-extrabold leading-[1.05] tracking-tight mb-8 text-ink">
+            Terms of Service
+          </h1>
+          <div class="border-l-2 border-amber-accent/30 pl-4 py-1">
+            <p class="text-xs font-bold text-muted uppercase tracking-wider mb-1">Effective Date</p>
+            <time datetime="2026-05-13" class="text-[17px] font-semibold text-ink">May 13, 2026</time>
+          </div>
+        </div>
+      </aside>
+      
+      <!-- Content -->
+      <div class="space-y-12 md:space-y-16 text-[18px] leading-relaxed text-muted md:mt-2">
+        <section aria-labelledby="sec-license">
+          <h2 id="sec-license" class="text-2xl font-bold text-ink mb-4 tracking-tight">License</h2>
+          <p>Semper grants you a limited, personal license for evaluation. Redistribution or reverse-engineering is prohibited.</p>
+        </section>
+        
+        <section aria-labelledby="sec-early-access">
+          <h2 id="sec-early-access" class="text-2xl font-bold text-ink mb-4 tracking-tight">Early Access</h2>
+          <p>The software is in a preview state. It is provided "AS IS" without warranties of any kind.</p>
+        </section>
+        
+        <section aria-labelledby="sec-liability">
+          <h2 id="sec-liability" class="text-2xl font-bold text-ink mb-4 tracking-tight">Liability</h2>
+          <p>Semper Systems is not liable for any data loss, system instability, or damages resulting from the use of the application.</p>
+        </section>
+        
+        <section aria-labelledby="sec-ownership">
+          <h2 id="sec-ownership" class="text-2xl font-bold text-ink mb-4 tracking-tight">Ownership</h2>
+          <p>All intellectual property and branding remain the exclusive property of Semper Systems.</p>
+        </section>
+      </div>
+      
+    </div>
+  </main>
+</Layout>
