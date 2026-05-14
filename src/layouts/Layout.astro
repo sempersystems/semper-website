@@ -29,34 +29,34 @@ const {
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
       media="print"
       onload="this.media='all'"
     />
     <noscript>
       <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
       />
     </noscript>
   </head>
   <body class="overflow-x-hidden">
-    <header class="fixed top-0 left-0 w-full px-5 pt-4.5 z-50">
+    <header class="fixed top-0 left-0 w-full px-5 pt-4 z-50">
       <nav
-        class="w-full max-w-280 mx-auto glass-nav flex items-center justify-between gap-6 py-2.5 pl-4.5 pr-3"
+        class="w-full max-w-6xl mx-auto glass-nav flex items-center justify-between gap-6 py-2 pl-4 pr-3"
         aria-label="Primary navigation"
       >
         <a
           href="/"
-          class="flex items-center gap-2.5 text-[17px] font-extrabold whitespace-nowrap"
+          class="flex items-center gap-2 text-base md:text-lg font-extrabold whitespace-nowrap"
           aria-label="Semper home"
         >
           <span
-            class="w-7.5 h-7.5 bg-ink text-[#fff8ea] rounded-[11px] flex items-center justify-center"
+            class="w-8 h-8 bg-ink text-[#fff8ea] rounded-xl flex items-center justify-center"
             aria-hidden="true">S</span
           >
           <span>Semper</span>
@@ -74,7 +74,7 @@ const {
           <a href="/terms" class="hover:text-ink transition-colors">Terms</a>
           <a
             href="/waitlist"
-            class="bg-ink text-white rounded-full px-4 py-2.5 button-shine arrow-reveal press-scale hover:shadow-[0_12px_22px_rgba(21,21,21,0.15)] hover:-translate-y-0.5 transition-all"
+            class="bg-ink text-white rounded-full px-4 py-2 button-shine arrow-reveal press-scale hover:shadow-[0_12px_22px_rgba(21,21,21,0.15)] hover:-translate-y-0.5 transition-all"
             >Join waitlist</a
           >
         </div>
@@ -86,10 +86,10 @@ const {
           aria-expanded="false"
         >
           <span
-            class="w-4.5 h-0.5 bg-ink rounded-full transition-transform duration-300 origin-center"
+            class="w-5 h-0.5 bg-ink rounded-full transition-transform duration-300 origin-center"
           ></span>
           <span
-            class="w-4.5 h-0.5 bg-ink rounded-full transition-transform duration-300 origin-center"
+            class="w-5 h-0.5 bg-ink rounded-full transition-transform duration-300 origin-center"
           ></span>
         </button>
       </nav>
@@ -132,9 +132,9 @@ const {
 
     <footer class="w-full p-6" role="contentinfo">
       <div
-        class="w-full max-w-282.5 mx-auto border-t border-border-warm pt-7 pb-4.5 flex flex-col md:flex-row items-center justify-between gap-4.5 text-muted text-sm"
+        class="w-full max-w-6xl mx-auto border-t border-border-warm pt-7 pb-4 flex flex-col md:flex-row items-center justify-between gap-4 text-muted text-sm"
       >
-        <div class="flex flex-col md:flex-row items-center gap-4.5">
+        <div class="flex flex-col md:flex-row items-center gap-4">
           <a
             href="/"
             class="flex items-center gap-2 text-ink font-extrabold"
