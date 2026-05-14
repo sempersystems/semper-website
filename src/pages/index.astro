@@ -15,7 +15,7 @@ import Layout from "../layouts/Layout.astro";
       >
       </div>
 
-      <div class="relative z-10 text-center lg:text-left" data-animate>
+      <div class="relative z-10 text-center lg:text-left">
         <p
           class="text-sm font-bold text-amber-accent tracking-widest uppercase mb-4"
         >
@@ -58,7 +58,6 @@ import Layout from "../layouts/Layout.astro";
       <!-- Mock Window -->
       <div
         class="w-full max-w-2xl lg:max-w-none perspective-[1400px] relative z-10 mx-auto"
-        data-animate
       >
         <div
           class="animate-float bg-white/84 border border-border-warm/95 rounded-3xl md:rounded-[30px] shadow-[0_24px_70px_rgba(55,42,25,0.12),inset_0_1px_0_rgba(255,255,255,0.8)] overflow-hidden origin-center"
@@ -591,6 +590,11 @@ import Layout from "../layouts/Layout.astro";
       });
     }
 
-    shaderTargets.forEach(createShader);
+      // Defer WebGL initialization to prevent blocking the main thread during page load
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => shaderTargets.forEach(createShader));
+      } else {
+        setTimeout(() => shaderTargets.forEach(createShader), 100);
+      }
   </script>
 </Layout>
