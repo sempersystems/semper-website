@@ -1,6 +1,5 @@
 import crypto from "node:crypto";
 
-const MAX_BODY_BYTES = 2048;
 const MIN_SUBMIT_MS = 1600;
 const MAX_FORM_AGE_MS = 30 * 60 * 1000;
 const IP_WINDOW_MS = 10 * 60 * 1000;
@@ -29,6 +28,14 @@ class PublicError extends Error {
   }
 }
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '2kb',
+    },
+  },
+};
+
 export default async function handler(request, response) {
   setBaseHeaders(response);
 
@@ -43,10 +50,10 @@ export default async function handler(request, response) {
   try {
     enforceSameOrigin(request);
 
-    const payload = parsePayload(
-      await readBody(request),
-      request.headers["content-type"] ?? "",
-    );
+    const payload = request.body;
+    if (!payload || typeof payload !== "object") {
+      throw new PublicError(400, "empty_request", "Enter a valid email address.");
+    }
 
     if (isSpamTrap(payload)) {
       return send(request, response, 200, successPayload());
@@ -161,48 +168,6 @@ function send(request, response, statusCode, payload, retryAfterSeconds = null) 
 function wantsHtml(request) {
   const accept = String(request.headers.accept ?? "");
   return accept.includes("text/html") && !accept.includes("application/json");
-}
-
-async function readBody(request) {
-  const chunks = [];
-  let size = 0;
-
-  for await (const chunk of request) {
-    const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
-    size += buffer.byteLength;
-
-    if (size > MAX_BODY_BYTES) {
-      throw new PublicError(
-        413,
-        "payload_too_large",
-        "The submitted form is too large.",
-      );
-    }
-
-    chunks.push(buffer);
-  }
-
-  return Buffer.concat(chunks).toString("utf8");
-}
-
-function parsePayload(body, contentType) {
-  if (!body.trim()) {
-    throw new PublicError(400, "empty_request", "Enter a valid email address.");
-  }
-
-  if (contentType.includes("application/json")) {
-    try {
-      return JSON.parse(body);
-    } catch {
-      throw new PublicError(400, "bad_json", "Enter a valid email address.");
-    }
-  }
-
-  if (contentType.includes("application/x-www-form-urlencoded")) {
-    return Object.fromEntries(new URLSearchParams(body));
-  }
-
-  throw new PublicError(415, "unsupported_media_type", "Use the waitlist form to join.");
 }
 
 function normalizeEmail(value) {
