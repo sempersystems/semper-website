@@ -27,6 +27,20 @@ bun run build
 bun run preview
 ```
 
+## Waitlist
+
+The waitlist page posts to `/api/waitlist`, which is implemented as a Vercel
+Function in `api/waitlist.js`.
+
+Set `WAITLIST_WEBHOOK_URL` in Vercel before accepting real signups. The function
+fails closed when this value is missing so the site does not pretend an email was
+saved. The webhook receives JSON with `event`, `email`, `source`, `site`, and
+`createdAt`.
+
+Optional: set `WAITLIST_ALLOWED_ORIGINS` to a comma-separated list of exact
+origins if the form should only accept posts from specific domains. Same-origin
+requests are allowed by default.
+
 ### Notes:
 - The `bun run dev` command starts a local development server and prints the local URL in your terminal.
 - Use `bun run preview` to preview the production build locally after running `bun run build`.

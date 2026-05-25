@@ -1,0 +1,232 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Join the Waitlist | Semper"
+  description="Join the Semper waitlist for early macOS preview access and product updates."
+>
+  <main class="w-full max-w-6xl mx-auto px-6 pt-32 md:pt-40 pb-28">
+    <section
+      class="grid grid-cols-1 lg:grid-cols-[0.92fr_1.08fr] gap-10 lg:gap-16 items-start"
+      aria-labelledby="waitlist-title"
+      data-animate
+    >
+      <div class="lg:sticky lg:top-32">
+        <p class="text-sm font-bold text-amber-accent tracking-widest uppercase mb-4">
+          Early access
+        </p>
+        <h1
+          id="waitlist-title"
+          class="text-[clamp(42px,6vw,72px)] font-extrabold mb-6 max-w-3xl"
+        >
+          Join the Semper waitlist.
+        </h1>
+        <p class="text-muted text-body-lg max-w-2xl mb-8">
+          Get notified when the first macOS preview is ready. We only use your
+          email for early access and product updates.
+        </p>
+
+        <div class="grid gap-4 text-[17px] text-muted">
+          <div class="flex gap-3">
+            <span
+              class="mt-1.5 w-2.5 h-2.5 rounded-full bg-moss shrink-0"
+              aria-hidden="true"
+            ></span>
+            <p>Local-first memory for pages, documents, notes, and app context.</p>
+          </div>
+          <div class="flex gap-3">
+            <span
+              class="mt-1.5 w-2.5 h-2.5 rounded-full bg-amber-accent shrink-0"
+              aria-hidden="true"
+            ></span>
+            <p>No account spam, no broad tracking, and no selling your email.</p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="bg-white/82 border border-border-warm/90 rounded-[28px] shadow-[0_18px_48px_rgba(55,42,25,0.1)] p-6 md:p-8"
+      >
+        <form
+          action="/api/waitlist"
+          method="post"
+          class="grid gap-5"
+          data-waitlist-form
+          novalidate
+        >
+          <div class="grid gap-2">
+            <label for="email" class="font-bold text-ink">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              inputmode="email"
+              autocomplete="email"
+              required
+              placeholder="you@example.com"
+              class="w-full min-h-13 rounded-2xl border border-border-warm bg-bg/80 px-4 text-ink outline-none transition-colors focus:border-amber-accent focus:ring-2 focus:ring-amber-accent/20"
+            />
+          </div>
+
+          <div class="sr-only" aria-hidden="true">
+            <label for="company">Company</label>
+            <input
+              id="company"
+              name="company"
+              type="text"
+              tabindex="-1"
+              autocomplete="off"
+              data-spam-field
+            />
+          </div>
+
+          <input
+            type="hidden"
+            name="startedAt"
+            value=""
+            data-started-at
+          />
+
+          <button
+            type="submit"
+            class="bg-ink text-white font-semibold rounded-full min-h-13 px-6 inline-flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all ring-1 ring-white/10 button-shine arrow-reveal press-scale disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-lg"
+            data-submit-button
+          >
+            Join waitlist
+          </button>
+
+          <p
+            class="min-h-6 text-sm font-semibold text-muted"
+            role="status"
+            aria-live="polite"
+            data-waitlist-status
+          >
+          </p>
+
+          <p class="text-sm leading-relaxed text-muted">
+            By joining, you agree to receive Semper early access updates. You can
+            ask to be removed at any time by emailing
+            <a
+              href="mailto:hello@semper.systems"
+              class="text-ink font-semibold hover:text-amber-accent"
+            >
+              hello@semper.systems</a>.
+          </p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // @ts-nocheck
+    const form = document.querySelector("[data-waitlist-form]");
+    const status = document.querySelector("[data-waitlist-status]");
+    const startedAt = document.querySelector("[data-started-at]");
+    const button = document.querySelector("[data-submit-button]");
+
+    function setStartedAt() {
+      if (startedAt instanceof HTMLInputElement) {
+        startedAt.value = String(Date.now());
+      }
+    }
+
+    function setStatus(message, tone = "muted") {
+      if (!(status instanceof HTMLElement)) return;
+
+      status.textContent = message;
+      status.classList.toggle("text-moss", tone === "success");
+      status.classList.toggle("text-amber-accent", tone === "warning");
+      status.classList.toggle("text-muted", tone === "muted");
+    }
+
+    function messageFromQueryString() {
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.get("joined") === "1") {
+        setStatus("You're on the list. We'll be in touch.", "success");
+      } else if (params.has("error")) {
+        setStatus("Unable to join the waitlist right now. Try again later.", "warning");
+      }
+    }
+
+    setStartedAt();
+    messageFromQueryString();
+
+    if (form instanceof HTMLFormElement) {
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const email = String(formData.get("email") ?? "").trim();
+        const company = String(formData.get("company") ?? "");
+        const startTime = Number(formData.get("startedAt"));
+
+        if (!email) {
+          setStatus("Enter your email address.", "warning");
+          return;
+        }
+
+        if (button instanceof HTMLButtonElement) {
+          button.disabled = true;
+          button.textContent = "Joining...";
+        }
+
+        setStatus("Submitting...", "muted");
+
+        try {
+          const response = await fetch(form.action, {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email,
+              company,
+              startedAt: startTime,
+            }),
+          });
+
+          let payload = {};
+          try {
+            payload = await response.json();
+          } catch {
+            payload = {};
+          }
+
+          if (!response.ok) {
+            const fallback =
+              response.status === 429
+                ? "Too many attempts. Try again in a few minutes."
+                : "Unable to join the waitlist right now. Try again later.";
+            throw new Error(
+              typeof payload.message === "string" ? payload.message : fallback,
+            );
+          }
+
+          form.reset();
+          setStartedAt();
+          setStatus(
+            typeof payload.message === "string"
+              ? payload.message
+              : "You're on the list. We'll be in touch.",
+            "success",
+          );
+        } catch (error) {
+          setStatus(
+            error instanceof Error
+              ? error.message
+              : "Unable to join the waitlist right now. Try again later.",
+            "warning",
+          );
+        } finally {
+          if (button instanceof HTMLButtonElement) {
+            button.disabled = false;
+            button.textContent = "Join waitlist";
+          }
+        }
+      });
+    }
+  </script>
+</Layout>
