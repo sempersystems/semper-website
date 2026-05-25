@@ -13,10 +13,10 @@ const {
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="w-full overflow-x-hidden">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link
@@ -44,7 +44,7 @@ const {
       />
     </noscript>
   </head>
-  <body class="overflow-x-hidden">
+  <body class="w-full overflow-x-hidden">
     <header class="fixed top-0 left-0 w-full px-5 pt-4 z-50">
       <nav
         class="w-full max-w-6xl mx-auto glass-nav flex items-center justify-between gap-6 py-2 pl-4 pr-3"
@@ -70,7 +70,8 @@ const {
             >How it Works</a
           >
           <a href="/blog" class="hover:text-ink transition-colors">Blog</a>
-          <a href="/privacy" class="hover:text-ink transition-colors">Privacy</a>
+          <a href="/privacy" class="hover:text-ink transition-colors">Privacy</a
+          >
           <a href="/terms" class="hover:text-ink transition-colors">Terms</a>
           <a
             href="/waitlist"
